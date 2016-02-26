@@ -1,6 +1,9 @@
 function GB = f_GBiparti2Reseau(G)
 
 % Transfoms a bipartite graph G to a network GB
+% Attention ce programme est très particulier :
+% Il différencie les éléments de droite comme étant des sommets sans
+% adjacent
 
 n = G.NbVertices; 
 GB.NbVertices = n + 2; % n + 1source + 1puits

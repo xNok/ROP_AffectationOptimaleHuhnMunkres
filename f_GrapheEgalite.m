@@ -11,17 +11,17 @@ GL.NbEdges = nnz(ML==1);      % Initially empty graph
 GL.Orientation = 1;  % [0] - Non directed; 1 - directed; 2 - mixte
 GL.AdjList = [];     % Initially empty graph
 
+% Creation du Graphe d'égalité à partir de la matrice d'égalité
 GL.AdjList = cell(1,GL.NbVertices);
 for k = 1 : GL.NbVertices, GL.AdjList{k} = []; end
 
-for i = 1:GL.NbVertices
- nProcesseur = GL.NbVertices/2;
- if i <  nProcesseur+1
+% On numerote arbitraiement :
+% les processeurs de 1 à n
+% les taches de n+1 à 2n
+for i = 1:GL.NbVertices/2
     i_vertices = find(ML(i,:)==1);
     GL.AdjList{i} = [i_vertices+10*ones(size(i_vertices)); E(i, i_vertices)];
- else
-    i_vertices = find(ML(:,i-nProcesseur)==1);
-    GL.AdjList{i} = [i_vertices'; E(i_vertices, i-nProcesseur)'];
- end
 end
+% pour s'adapter au programe f_GBiparti2Reseau le liens n'est pas
+% bidirectionnel (Les vertices 
 
