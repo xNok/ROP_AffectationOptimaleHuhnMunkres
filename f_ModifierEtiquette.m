@@ -4,7 +4,5 @@ function L = f_ModifierEtiquette(GL, C, L)
 
 r = (G.NbVertices/2)+find(ismember([(G.NbVertices/2+1):G.NbVertices], C)==0)
 
-
-
 end
 
