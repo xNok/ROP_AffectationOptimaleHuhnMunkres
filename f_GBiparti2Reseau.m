@@ -1,9 +1,10 @@
 function GB = f_GBiparti2Reseau(G)
 
 % Transfoms a bipartite graph G to a network GB
+
 % Attention ce programme est très particulier :
 % Il différencie les éléments de droite comme étant des sommets sans
-% adjacent
+% adjacent ie AdjList{i} = []
 
 n = G.NbVertices; 
 GB.NbVertices = n + 2; % n + 1source + 1puits
@@ -16,15 +17,27 @@ for u = 2 : n + 1
     V_u = G.AdjList{u-1};
     if ~isempty(V_u) % u is Left
         Left = [Left, u];
-        V_uu = V_u + 1; % new neighbours
-        C_uu = BigValue + zeros(size(V_u)); % infinite capacities
-        GB.AdjList{u} = [V_uu; C_uu];
+        
+        % V_uu = V_u + 1; % new neighbours
+        
+        %----
+        % C_uu = BigValue + zeros(size(V_u)); % infinite capacities
+        % GB.AdjList{u} = [V_uu; C_uu];
+        % GB.AdjList{u} = [V_uu]; 
+        %----
+        
+        GB.AdjList{u} = [V_u]; 
     else
         Right = [Right, u]; % u is Right
-        GB.AdjList{u} = [n + 2; 1];
+        
+        %----
+        % GB.AdjList{u} = [n + 2; 1];
+        %----
+        
+        GB.AdjList{u} = [n + 2; inf];
     end   
 end
 GB.Left = Left; L = length(Left); 
 GB.Right = Right; R = length(Right);
-GB.AdjList{1} = [Left; 1 + zeros(1,L)];
+GB.AdjList{1} = [Left; inf + zeros(1,L)];
 GB.NbEdges = G.NbEdges + L + R;

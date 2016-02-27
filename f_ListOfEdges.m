@@ -15,7 +15,7 @@ NbColumns = nc + 1;
 L = zeros(G.NbEdges, NbColumns); lig = 0;
 for k = 1 : G.NbVertices
     if ~isempty(G.AdjList{k})
-        N = G.AdjList{k}(1,:);
+        N = G.AdjList{k}(1,:); % List of neighbors
         
         % Test of rendondant edges
         for j = 1 : length(N)

@@ -1,7 +1,7 @@
 function [FMax, L, Cmin, Smin] = f_FlotMaxEdmondsKarp(G, s, t, ICap)
 
 % Finds the Flow Max and the Min Cut in the network G
-% from source s to the sink t. IC is the index of capacity line
+% from source s to the sink t. ICap is the index of capacity line
 % in the original network G
 
 % The structure of Gf : Gf.AdjList{k} has 3 rows

@@ -37,7 +37,7 @@ GL = f_GrapheEgalite(E,L);
 C = f_CouplageMax(GL);
 
 %--------------------------------------------------
-% Verification avec un algoritme de professionelle
+% 3. Verification avec un algoritme de professionelle
 %--------------------------------------------------
 
 % Transformation de la matrice des performance en matrice de coût
