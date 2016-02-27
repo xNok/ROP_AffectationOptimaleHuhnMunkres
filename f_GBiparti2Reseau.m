@@ -18,15 +18,14 @@ for u = 2 : n + 1
     if ~isempty(V_u) % u is Left
         Left = [Left, u];
         
-        % V_uu = V_u + 1; % new neighbours
+        V_uu = V_u + [1;0]*ones(1,size(V_u,2)) ; % new neighbours
         
         %----
         % C_uu = BigValue + zeros(size(V_u)); % infinite capacities
         % GB.AdjList{u} = [V_uu; C_uu];
-        % GB.AdjList{u} = [V_uu]; 
         %----
         
-        GB.AdjList{u} = [V_u]; 
+        GB.AdjList{u} = [V_uu];
     else
         Right = [Right, u]; % u is Right
         
