@@ -37,7 +37,11 @@ n = size(E,1);
 L = f_EtiquetesInitialsesFaisables(E);
 GL = f_GrapheEgalite(E,L);
 [C AB C2] = f_CouplageMax(GL);
-[L GLO X Y sommetNonAtteint B A]= f_ModifierEtiquettes(GL,C2,L)
+%while
+    [L GLO X Y sommetNonAtteint B A]= f_ModifierEtiquettes(GL,C2,L)
+    GL = f_GrapheEgalite(E,L);
+    [C AB C2] = f_CouplageMax(GL);
+%end
 
 %--------------------------------------------------
 % 3. Algorythm Optimiser avec les fonction de Matlab
