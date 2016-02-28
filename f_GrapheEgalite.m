@@ -20,7 +20,7 @@ for k = 1 : GL.NbVertices, GL.AdjList{k} = []; end
 % les taches de n+1 à 2n
 for i = 1:GL.NbVertices/2
     i_vertices = find(ML(i,:)==1);
-    GL.AdjList{i} = [i_vertices+(GL.NbVertices/2)*ones(size(i_vertices)); E(i, i_vertices)];
+    GL.AdjList{i} = [i_vertices+10*ones(size(i_vertices)); E(i, i_vertices)];
 end
 % pour s'adapter au programe f_GBiparti2Reseau le liens n'est pas
 % bidirectionnel (Les vertices 

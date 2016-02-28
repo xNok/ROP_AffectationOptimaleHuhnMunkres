@@ -4,7 +4,7 @@
 % Problem :
 % Soit n tâches à réaliser et n machines pour les réaliser.
 % Connaissant A(i,j) la perfommance de réalisation de la tâche Ti par le processeur la Pj
-% On cherche l'affectation conduissant à la performance total maximum
+% On cherche l'affectation conduissant à la performance total maximum 
 %
 % Resources :
 % Fondamentaux de Recherche Opérationnelle, EMA, Stephane Janaqi
@@ -20,7 +20,8 @@
 %--------------------------------------------------
 % 0. Nettoyage
 %--------------------------------------------------
-close all, clear all, , clc
+clear all, close all, clc
+
 
 %--------------------------------------------------
 % 1. Laod Matrix
@@ -31,27 +32,12 @@ E = importdata(filename);
 n = size(E,1);
 
 %--------------------------------------------------
-% 2. Algorythm
+%2. Algorythm
 %--------------------------------------------------
 L = f_EtiquetesInitialsesFaisables(E);
 GL = f_GrapheEgalite(E,L);
-[C, AdjL] = f_CouplageMax(GL);
-%---
-% representation graphique
-%W  = AdjL(:,3)'; L1 = AdjL(:,1)';  L2 = AdjL(:,2)';
-%AB = sparse(L1,L2,W,22,22); h = view(biograph(AB,[],'ShowWeights','on'));
-%---
-
-%while ~isempty(find(ismember([(GL.NbVertices/2+1):GL.NbVertices], C)==0))
-% L = f_ModifierEtiquette(GL, C, L);
-% GL = f_GrapheEgalite(E,L);
-% [C, AdjL] = f_CouplageMax(GL);
-%---
-% representation graphique
-%---
-%W  = AdjL(:,3)'; L1 = AdjL(:,1)';  L2 = AdjL(:,2)';
-%AB = sparse(L1,L2,W,22,22); h = view(biograph(AB,[],'ShowWeights','on'));
-%end
+[C AB C2] = f_CouplageMax(GL);
+[L GLO X Y sommetNonAtteint B A]= f_ModifierEtiquettes(GL,C2,L)
 
 %--------------------------------------------------
 % 3. Algorythm Optimiser avec les fonction de Matlab
@@ -166,3 +152,13 @@ for i=1:n
     B(i,:) = - ( E(i,:) - max(E(i,:)));
 end
 assignment = munkres(B)
+
+
+
+
+
+
+
+
+
+
