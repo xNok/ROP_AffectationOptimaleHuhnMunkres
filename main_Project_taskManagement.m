@@ -25,7 +25,8 @@ clear all, close all, clc
 
 %--------------------------------------------------
 % 1. Laod Matrix
-%--------------------------------------------------
+%%
+
 path = 'D:\03-Ecole\2A\ROP\Projet_AC_FI\';
 filename = strcat(path , 'M10.txt');
 E = importdata(filename);
@@ -34,6 +35,8 @@ n = size(E,1);
 %--------------------------------------------------
 %2. Algorythm
 %--------------------------------------------------
+% Etape 1 - Étiquette faisables
+%%
 L = f_EtiquetesInitialsesFaisables(E);
 GL = f_GrapheEgalite(E,L);
 [C AB C2] = f_CouplageMax(GL);
@@ -48,7 +51,7 @@ GL = f_GrapheEgalite(E,L);
 %--------------------------------------------------
 %*************************************************
 % Etape 1 - Étiquette faisables
-%*************************************************
+%%
 L = f_EtiquetesInitialsesFaisables(E);
 %----%---
 % representation graphique
@@ -67,7 +70,7 @@ h.ShowTextInNodes = 'label';
 
 %*************************************************
 % Etape 2 - Matrice d'agalité
-%*************************************************
+%%
 %Pour construire ML :
 % on construit une matrice tels que M(x,y)= 1 <=> L(x)+L(y)=E(x,y)
 % on multiplie terme à terme avec E pour récupérer les coefficients
@@ -89,7 +92,7 @@ h.ShowTextInNodes = 'label';
 
 %*************************************************
 % Etape 3 CouplageMax
-%*************************************************
+%%
 [M,F,K] = f_CouplageEdmonds(ML)
 %----%---
 % representation graphique
@@ -98,14 +101,21 @@ h = view(biograph(F,[],'ShowWeights','on'));
 
 %*************************************************
 % Etape 4 Determiner si le couplage est maximal
-%*************************************************
-%on regarde si tout les éléments sont bien présent dans la liste des arrètes
-while ~isempty(find(ismember(1:GL.NbVertices,i)==0))
+%%
+%si tout les élément sont connecté alors M=n
+while M ~= n
     %*************************************************
     % Etape 6 changement des étiquettes
     %*************************************************
-    
-    break
+    L = f_ModifierEtiquette(ML,L,M,F,K);
+    %*************************************************
+    % Etape 7 Nouvelle matrice d'égalité
+    %*************************************************
+    ML = f_MatriceEgalite(E,L);
+    %*************************************************
+    % Etape 8 Nouveau couplage max
+    %*************************************************
+    [M,F,K] = f_CouplageEdmonds(ML);
 end
 
 % graphshortestpath(DG,1,6)

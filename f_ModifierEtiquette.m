@@ -1,8 +1,20 @@
-function L = f_ModifierEtiquette(ML, K, , L)
+function L = f_ModifierEtiquette(ML,L,M,F,K)
 %F_MODIFIERETIQUETTE Summary of this function goes here
 %   Detailed explanation goes here
 
-r = find(ismember(1:GL.NbVertices,i)==0); % éléments qui font que C n'est pas parfait
+%*************************************************
+% Etape 0 Création du reseau
+%%
+stML = f_PerforMat2ReseauMat( ML )
+n = size(ML,1);
+
+%*************************************************
+% Etape 1 Création du graphe GLO
+%%
+
+[i_f,j_f,k_f] = find(F);[i_stML,j_stML,k_stML] = find(stML); %transformation des matices sparses
+f_LEdge = [i_f,j_f]; %liste des arrètes de F
+stML_LEdge = [i_stML,j_stML]; %liste des arrêtes de stML
 
 GLO = [i_f,j_f,k_f]; % on commance GLO avec les éléments de F
 
@@ -20,19 +32,19 @@ for i=1:size(i_stML,1) % pour chaque colonne de F
     end
 end
 
-% Création du graphe GLO
-%F(2*n+1,:) = zeros(1,2*n+2); %suppression de la source
-%F(:,2*n+2) = zeros(2*n+2,1); %supprestion du puit
-[i_f,j_f,k_f] = find(F);[i_stML,j_stML,k_stML] = find(stML); %transformation des matices sparses
-f_LEdge = [i_f,j_f]; %liste des arrètes de F
-stML_LEdge = [i_stML,j_stML]; %liste des arrêtes de stML
+%*************************************************
+% Etape 2 éléments qui font que C n'est pas parfait
+%%
+r = find(ismember([1:n],i_f)==0);
 
-%----%---
-% representation graphique
-    GLO_sp = sparse(GLO(:,1),GLO(:,2),GLO(:,3),2*n+2,2*n+2);
-    g = view(biograph(GLO_sp,[],'ShowWeights','on'));
-%----%---
+%*************************************************
+% Etape 3 BFS
+%%
 order = graphtraverse(F,r(1),'Method','BFS');
+
+%*************************************************
+% Etape 4 définition de X et Y
+%%
 
 end
 
