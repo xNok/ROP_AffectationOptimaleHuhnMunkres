@@ -33,10 +33,10 @@ for u = 2 : n + 1
         % GB.AdjList{u} = [n + 2; 1];
         %----
         
-        GB.AdjList{u} = [n + 2; Inf];
+        GB.AdjList{u} = [n + 2; 1];
     end   
 end
 GB.Left = Left; L = length(Left); 
 GB.Right = Right; R = length(Right);
-GB.AdjList{1} = [Left; Inf + zeros(1,L)];
+GB.AdjList{1} = [Left; 1 + zeros(1,L)];
 GB.NbEdges = G.NbEdges + L + R;

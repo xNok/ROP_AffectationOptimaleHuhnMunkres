@@ -38,8 +38,8 @@ GL = f_GrapheEgalite(E,L);
 [C, AdjL] = f_CouplageMax(GL);
     %---
     % representation graphique
-        W  = AdjL(:,3)'; L1 = AdjL(:,1)';  L2 = AdjL(:,2)';
-        AB = sparse(L1,L2,W,22,22); h = view(biograph(AB,[],'ShowWeights','on'));
+        %W  = AdjL(:,3)'; L1 = AdjL(:,1)';  L2 = AdjL(:,2)';
+        %AB = sparse(L1,L2,W,22,22); h = view(biograph(AB,[],'ShowWeights','on'));
     %---
 
 %while ~isempty(find(ismember([(GL.NbVertices/2+1):GL.NbVertices], C)==0))    
@@ -56,11 +56,24 @@ GL = f_GrapheEgalite(E,L);
 %--------------------------------------------------
 % 3. Algorythm Optimiser avec les fonction de Matlab
 %--------------------------------------------------
-h = f_viewGraph(E);
-
 % Etape 1 - Étiquette faisables
 %*************************************************
 L = f_EtiquetesInitialsesFaisables(E);
+%----%---
+     % representation graphique
+    h = f_viewGraph(E);
+    for i = 1:2*n
+        if i < n+1
+          h.Nodes(i).Label =...
+                sprintf('%s:%d',h.Nodes(i).ID,L.y(i));  
+        else
+          h.Nodes(i).Label =...
+                sprintf('%s:%d',h.Nodes(i).ID,L.x(i-n));
+        end
+    end
+    h.ShowTextInNodes = 'label';
+%----%---
+    
 % Etape 2 - Matrice d'agalité
 %*************************************************
     %Pour construire ML :
@@ -70,6 +83,16 @@ ML = (E==L.x*ones(1,size(E,1))+ones(size(E,1),1)*L.y) .* E;
 %----%---
      % representation graphique
      h = f_viewGraph(ML);
+         for i = 1:2*n
+        if i < n+1
+          h.Nodes(i).Label =...
+                sprintf('%s:%d',h.Nodes(i).ID,L.y(i));  
+        else
+          h.Nodes(i).Label =...
+                sprintf('%s:%d',h.Nodes(i).ID,L.x(i-n));
+        end
+    end
+    h.ShowTextInNodes = 'label';
 %----%---
 
 % Etape 3 Ajout du puis et de la source
@@ -78,7 +101,7 @@ ML = (E==L.x*ones(1,size(E,1))+ones(size(E,1),1)*L.y) .* E;
 % sommet 22 le puit
 stML = [zeros(size(ML)) ML ; zeros(size(ML)) zeros(size(ML))]; %expantion de la matrice ML pour obtenir la matrice du graphe
 % construction des vecteurs reliant la source au tachet et le puis au processeur
-st = [ zeros(n,1) zeros(n,1) ;  zeros(n,1) Inf*ones(n,1)]; ts = [ Inf*ones(1,n) zeros(1,n) ; zeros(1,n)  zeros(1,n)];
+st = [ zeros(n,1) zeros(n,1) ;  zeros(n,1) ones(n,1)]; ts = [ ones(1,n) zeros(1,n) ; zeros(1,n)  zeros(1,n)];
 stML = [ stML st ; ts zeros(2,2) ]; % assemblage de la matrice
 %----%---
     % representation graphique
@@ -90,7 +113,7 @@ stML = [ stML st ; ts zeros(2,2) ]; % assemblage de la matrice
 [M,F,K] = graphmaxflow(sparse(stML),21,22,'Method','Edmonds');
 %----%---
     % representation graphique
-     set(h.Nodes(K(1,:)),'Color',[1 0 0]);
+     h = view(biograph(F,[],'ShowWeights','on'));
 %----%---
 
 % Etape 5 Determiner si le couplage est maximal
@@ -101,8 +124,8 @@ while ~isempty(find(ismember(1:GL.NbVertices,i)==0))
     % Etape 6 changement des étiquettes
     r = find(ismember(1:GL.NbVertices,i)==0); % éléments qui font que C n'est pas parfait
     % Création du graphe GLO
-    F(n+1,:) = zeros(1,2*n+2); %suppression de la source
-    F(:,n+2) = zeros(2*n+2,1); %supprestion du puit
+    F(2*n+1,:) = zeros(1,2*n+2); %suppression de la source
+    F(:,2*n+2) = zeros(2*n+2,1); %supprestion du puit
     F(n+1:2*n,1:n) = ones(n,n); % tout les autres arc vont de P à T
         %----%---
         % representation graphique
@@ -111,7 +134,7 @@ while ~isempty(find(ismember(1:GL.NbVertices,i)==0))
     order = graphtraverse(F,r(1),'Method','BFS');
         %----%---
         % representation graphique
-            for i = 1:size(order)
+            for i = 1:size(order,2)
                 g.Nodes(order(i)).Label =...
                         sprintf('%s:%d',g.Nodes(order(i)).ID,i);
             end
