@@ -5,7 +5,8 @@ function [M,F,K] = f_CouplageEdmonds(ML,L)
 n = size(ML,1);
 
 stML = f_PerforMat2ReseauMat(ML); %conversion de la matrice en reseau
-[M,F,K] = graphmaxflow(sparse(stML),2*n+1,2*n+2,'Method','Edmonds'); %FlowMax Edmonds
+stML = sparse(stML);
+[M,F,K] = graphmaxflow(stML,2*n+1,2*n+2,'Method','Edmonds'); %FlowMax Edmonds
 
 end
 

@@ -50,7 +50,7 @@ delta = Inf;
 
 for x=X
     for y=Y_T
-        delta = min(L.x(x) + L.y(y) - E(y,y),delta); % on le garde que la plus petite valeurs
+        delta = min(L.x(x) + L.y(y) - E(x,y),delta); % on le garde que la plus petite valeurs
     end
 end
 

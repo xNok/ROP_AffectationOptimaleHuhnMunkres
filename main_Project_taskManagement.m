@@ -29,16 +29,16 @@ clear all, close all, clc
 % 1. Laod Matrix
 %%
 
-% path = 'D:\03-Ecole\2A\ROP\Projet_AC_FI\';
-% filename = strcat(path , 'M10.txt');
-% E = importdata(filename);
-% n = size(E,1);
+path = 'D:\03-Ecole\2A\ROP\Projet_AC_FI\';
+filename = strcat(path , 'M10.txt');
+E = importdata(filename);
+n = size(E,1);
 
 % E = [1 4 5 ; 5 7 6 ; 5 8 8]
 % n = size(E,1);
-
-E = [1 6 0; 0 8 6; 4 0 1]
-n = size(E,1);
+% 
+% E = [1 6 0; 0 8 6; 4 0 1]
+% n = size(E,1);
 
 %--------------------------------------------------
 %2. Algorythm
