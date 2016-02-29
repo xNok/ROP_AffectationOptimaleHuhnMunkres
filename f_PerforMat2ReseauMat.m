@@ -1,4 +1,4 @@
-function stML = f_PerforMat2ReseauMat(ML)
+function stML = f_PerforMat2ReseauMat(ML) %o(n^2)
 %F_PERFORMAT2RESEAUMAT transforme une matrice de performance en matrice de
 %reseau avec une source et un puis
 

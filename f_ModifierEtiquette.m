@@ -5,7 +5,7 @@ function L = f_ModifierEtiquette(ML,L,F,E)
 %*************************************************
 % Etape 0 Création du reseau
 %%
-stML = f_PerforMat2ReseauMat(ML);
+stML = f_PerforMat2ReseauMat(ML); %o(n^2)
 n = size(ML,1);
 
 %*************************************************
@@ -27,18 +27,18 @@ for i=1:size(i_stML,1) % pour chaque colonne de F
     else
         GLO = [ GLO ; [j_stML(i),i_stML(i),k_stML(i)]]; % Pas dans F de P vers T
     end
-end
+end %o(m)
 
 %*************************************************
 % Etape 2 éléments qui font que C n'est pas parfait
 %%
-r = find(ismember([1:n],i_f)==0);
+r = find(ismember([1:n],i_f)==0); %o(n)
 
 %*************************************************
 % Etape 3 BFS
 %%
 GLO = sparse(GLO(:,1),GLO(:,2),GLO(:,3),2*n,2*n);
-[disc, pred, Arbre_BFS] = graphtraverse(GLO,r(1),'Method','BFS');
+[disc, pred, Arbre_BFS] = graphtraverse(GLO,r(1),'Method','BFS'); %o(n+m)
 
 %*************************************************
 % Etape 4 définition de X et Y
@@ -52,18 +52,18 @@ for x=X
     for y=Y_T
         delta = min(L.x(x) + L.y(y) - E(x,y),delta); % on le garde que la plus petite valeurs
     end
-end
+end %o(n^2)
 
 %*************************************************
 % Etape 4 modifier étiquettes
 %%
 
 for x=X
-    L.x(x) = L.x(x) - delta;
+    L.x(x) = L.x(x) - delta; %o(n)
 end
 
 for y=Y
-    L.y(y) = L.y(y) + delta;
+    L.y(y) = L.y(y) + delta; %o(n)
 end
 
 end

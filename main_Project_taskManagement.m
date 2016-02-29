@@ -1,9 +1,10 @@
 % Main program Pour le projet de ROP : Assignement des tâches
 % Authors : Alexandre Couedelo, Flavien Isidore
 %
-% Problem :
+% Probleme :
 % Soit n tâches à réaliser et n machines pour les réaliser.
-% Connaissant A(i,j) la perfommance de réalisation de la tâche Ti par le processeur la Pj
+% Connaissant E(i,j) la perfommance de réalisation de la tâche Tj 
+% par le processeur la P
 % On cherche l'affectation conduissant à la performance total maximum 
 %
 % Resources :
@@ -18,6 +19,18 @@
 % hypothesis :
 % La graphe G est un graphe biparti complet, il peut donc être définit de
 % manière unique par la matrice des performances E
+
+%%%%%%%%%%%%%%%%%%%%SOMMAIRE%%%%%%%%%%%%%%%%%%%%
+
+% 0. Nettoyage
+% 1. Création des Matrices
+% 2. Algorithme 1 - 
+%------- Suivant exactement la méthode du cours // non-fonctionnel
+% 3. Algorithme 2 - 
+%------- Utilisant des matrices sparse et fonction native // fonctionnel
+% 4. Algorithme 3 - Verification par une programme tiers
+
+%%%%%%%%%%%%%%%%%%%%FIN SOMMAIRE%%%%%%%%%%%%%%%%%%%%
 
 %--------------------------------------------------
 % 0. Nettoyage
@@ -41,9 +54,8 @@ n = size(E,1);
 % n = size(E,1);
 
 %--------------------------------------------------
-%2. Algorythm
+%2. Algorythm - Version 1
 %--------------------------------------------------
-% Etape 1 - Étiquette faisables
 % %%
 % L = f_EtiquetesInitialsesFaisables(E);
 % GL = f_GrapheEgalite(E,L);
@@ -53,27 +65,28 @@ n = size(E,1);
 %     GL = f_GrapheEgalite(E,L);
 %     [C AB C2] = f_CouplageMax(GL);
 % %end
+
 %--------------------------------------------------
 % 3. Algorythm Optimiser avec les fonction de Matlab
 %--------------------------------------------------
 %*************************************************
 % Etape 1 - Étiquette faisables
 %%
-L = f_EtiquetesInitialsesFaisables(E);
+L = f_EtiquetesInitialsesFaisables(E); %o(n)
 %----%---
 % representation graphique
-% h = f_viewGraph(E);
-% for i = 1:2*n
-%     if i < n+1
-%         h.Nodes(i).Label =...
-%             sprintf('%s:%d',h.Nodes(i).ID,L.x(i));
-%     else
-%         h.Nodes(i).Label =...
-%             sprintf('%s:%d',h.Nodes(i).ID,L.y(i-n));
-%     end
-% end
-% h.ShowTextInNodes = 'label';
-% %----%---
+h = f_viewGraph(E);
+for i = 1:2*n
+    if i < n+1
+        h.Nodes(i).Label =...
+            sprintf('%s:%d',h.Nodes(i).ID,L.x(i));
+    else
+        h.Nodes(i).Label =...
+            sprintf('%s:%d',h.Nodes(i).ID,L.y(i-n));
+    end
+end
+h.ShowTextInNodes = 'label';
+%----%---
 
 %*************************************************
 % Etape 2 - Matrice d'agalité
@@ -81,26 +94,26 @@ L = f_EtiquetesInitialsesFaisables(E);
 %Pour construire ML :
 % on construit une matrice tels que M(x,y)= 1 <=> L(x)+L(y)=E(x,y)
 % on multiplie terme à terme avec E pour récupérer les coefficients
-ML = f_MatriceEgalite(E,L);
+ML = f_MatriceEgalite(E,L); %o(n^2)
 %----%---
 % representation graphique
-% h = f_viewGraph(ML);
-% for i = 1:2*n
-%     if i < n+1
-%         h.Nodes(i).Label =...
-%             sprintf('%s:%d',h.Nodes(i).ID,L.y(i));
-%     else
-%         h.Nodes(i).Label =...
-%             sprintf('%s:%d',h.Nodes(i).ID,L.x(i-n));
-%     end
-% end
-% h.ShowTextInNodes = 'label';
+h = f_viewGraph(ML);
+for i = 1:2*n
+    if i < n+1
+        h.Nodes(i).Label =...
+            sprintf('%s:%d',h.Nodes(i).ID,L.y(i));
+    else
+        h.Nodes(i).Label =...
+            sprintf('%s:%d',h.Nodes(i).ID,L.x(i-n));
+    end
+end
+h.ShowTextInNodes = 'label';
 %----%---
 
 %*************************************************
 % Etape 3 CouplageMax
 %%
-[M,F] = f_CouplageEdmonds(ML,L);
+[M,F] = f_CouplageEdmonds(ML,L); %o(n^2*sqrt)
 %----%---
 % representation graphique
 h = view(biograph(F,[],'ShowWeights','on'));
@@ -119,7 +132,7 @@ while M ~= n
     % Etape 7 Nouvelle matrice d'égalité
     %*************************************************
     ML = f_MatriceEgalite(E,L);
-    %----%---
+%    %----%---
 %         % representation graphique
 %         h = f_viewGraph(ML);
 %         for i = 1:2*n
