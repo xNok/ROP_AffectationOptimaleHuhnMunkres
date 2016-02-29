@@ -1,4 +1,4 @@
-% Main program for the ROP Project : Task Management
+% Main program Pour le projet de ROP : Assignement des tâches
 % Authors : Alexandre Couedelo, Flavien Isidore
 %
 % Problem :
@@ -62,18 +62,18 @@ n = size(E,1);
 L = f_EtiquetesInitialsesFaisables(E);
 %----%---
 % representation graphique
-h = f_viewGraph(E);
-for i = 1:2*n
-    if i < n+1
-        h.Nodes(i).Label =...
-            sprintf('%s:%d',h.Nodes(i).ID,L.x(i));
-    else
-        h.Nodes(i).Label =...
-            sprintf('%s:%d',h.Nodes(i).ID,L.y(i-n));
-    end
-end
-h.ShowTextInNodes = 'label';
-%----%---
+% h = f_viewGraph(E);
+% for i = 1:2*n
+%     if i < n+1
+%         h.Nodes(i).Label =...
+%             sprintf('%s:%d',h.Nodes(i).ID,L.x(i));
+%     else
+%         h.Nodes(i).Label =...
+%             sprintf('%s:%d',h.Nodes(i).ID,L.y(i-n));
+%     end
+% end
+% h.ShowTextInNodes = 'label';
+% %----%---
 
 %*************************************************
 % Etape 2 - Matrice d'agalité
@@ -84,23 +84,23 @@ h.ShowTextInNodes = 'label';
 ML = f_MatriceEgalite(E,L);
 %----%---
 % representation graphique
-h = f_viewGraph(ML);
-for i = 1:2*n
-    if i < n+1
-        h.Nodes(i).Label =...
-            sprintf('%s:%d',h.Nodes(i).ID,L.y(i));
-    else
-        h.Nodes(i).Label =...
-            sprintf('%s:%d',h.Nodes(i).ID,L.x(i-n));
-    end
-end
-h.ShowTextInNodes = 'label';
+% h = f_viewGraph(ML);
+% for i = 1:2*n
+%     if i < n+1
+%         h.Nodes(i).Label =...
+%             sprintf('%s:%d',h.Nodes(i).ID,L.y(i));
+%     else
+%         h.Nodes(i).Label =...
+%             sprintf('%s:%d',h.Nodes(i).ID,L.x(i-n));
+%     end
+% end
+% h.ShowTextInNodes = 'label';
 %----%---
 
 %*************************************************
 % Etape 3 CouplageMax
 %%
-[M,F,K] = f_CouplageEdmonds(ML,L);
+[M,F] = f_CouplageEdmonds(ML,L);
 %----%---
 % representation graphique
 h = view(biograph(F,[],'ShowWeights','on'));
@@ -120,29 +120,37 @@ while M ~= n
     %*************************************************
     ML = f_MatriceEgalite(E,L);
     %----%---
-        % representation graphique
-        h = f_viewGraph(ML);
-        for i = 1:2*n
-            if i < n+1
-                h.Nodes(i).Label =...
-                    sprintf('%s:%d',h.Nodes(i).ID,L.y(i));
-            else
-                h.Nodes(i).Label =...
-                    sprintf('%s:%d',h.Nodes(i).ID,L.x(i-n));
-            end
-        end
-        h.ShowTextInNodes = 'label';
-        %----%---
+%         % representation graphique
+%         h = f_viewGraph(ML);
+%         for i = 1:2*n
+%             if i < n+1
+%                 h.Nodes(i).Label =...
+%                     sprintf('%s:%d',h.Nodes(i).ID,L.y(i));
+%             else
+%                 h.Nodes(i).Label =...
+%                     sprintf('%s:%d',h.Nodes(i).ID,L.x(i-n));
+%             end
+%         end
+%         h.ShowTextInNodes = 'label';
+%         %----%---
     %*************************************************
     % Etape 8 Nouveau couplage max
     %*************************************************
-    [M,F,K] = f_CouplageEdmonds(ML,L);
+    [M,F] = f_CouplageEdmonds(ML,L);
+%         %----%---
+%         % representation graphique
+%         h = view(biograph(F,[],'ShowWeights','on'));
+%         %----%---
+end
+
+%*************************************************
+% Etape 9 Afficher resultat
+%*************************************************
+result = F;
         %----%---
         % representation graphique
         h = view(biograph(F,[],'ShowWeights','on'));
         %----%---
-end
-
 % graphshortestpath(DG,1,6)
 
 %--------------------------------------------------
